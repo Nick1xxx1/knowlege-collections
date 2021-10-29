@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project(sortTest)
 
-ADD_DEFINITIONS(-O3 -Wall)
+add_definitions(-O3 -Wall)
 add_executable(sortTest sortTest.cpp)
 add_library(sort sort.cpp)
 
