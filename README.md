@@ -5,7 +5,7 @@
 
 **data-struct** : 一些数据结构的代码实现  
 **kmp-algorithm** : kmp算法的代码实现  
-**refactor** : 代码重构学习代码
+**refactor** : 代码重构学习代码  
 **string-simple-implement** : String的简单实现代码  
 **sort-algorithm** : 排序算法的代码实现  
 **system-function** : 系统内置函数的代码实现  
