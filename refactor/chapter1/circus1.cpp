@@ -3,7 +3,7 @@
  * 假定变量plays是解析plays.json得到的Json::Value变量
  */
 
-// Json::Value变量是jsoncpp中定义的变量，详见https://github.com/open-source-parsers/jsoncpp
+// Json::Value变量是jsoncpp中定义的类，详见https://github.com/open-source-parsers/jsoncpp
 
 std::string printBillInfo(Json::Value invoice, Json::Value plays) {
     int totalAmount = 0;
