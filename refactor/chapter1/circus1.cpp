@@ -5,7 +5,7 @@
 
 // Json::Value变量是jsoncpp中定义的类，详见https://github.com/open-source-parsers/jsoncpp
 
-std::string printBillInfo(Json::Value invoice, Json::Value plays) {
+std::string printBillInfo(const Json::Value& invoice, const Json::Value& plays) {
     int totalAmount = 0;
     int volumeCredits = 0;
 
@@ -47,12 +47,12 @@ std::string printBillInfo(Json::Value invoice, Json::Value plays) {
 
         // print line for this order
         result += play["name"].asString() + " " +
-                  to_string(thisAmount / 10) +
+                  to_string(thisAmount / 100) +
                   "(" + to_string(audienceCnt) + "seats)\n";
         totalAmount += thisAmount;
     }
 
-    result += "Amount owed is " + to_string(thisAmount / 10) + "\n";
+    result += "Amount owed is " + to_string(totalAmount / 100) + "\n";
     result += "You earned " + to_string(volumeCredits) + "credits\n";
     return result;
 }
