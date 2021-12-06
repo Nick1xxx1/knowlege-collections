@@ -1,4 +1,4 @@
-# C/C++ kownlege-collections
+# C/C++ knowlege-collections
 归档一些C/C++常见知识的代码实现
 
 **common** : 存放一些编译好的公共库  
