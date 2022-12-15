@@ -1,14 +1,18 @@
 #ifndef _KMP_H_
 #define _KMP_H_
 
+#include <string>
+#include <vector>
+
+#include "types.h"
+
 /**
- * @brief kmp算法
+ * @brief kmp字符串搜索算法
  * 
- * @param text 待匹配的文本字符串
- * @param pattern 要查找的内容
- * @param next 前缀和后缀最大公共步长的数组
- * @return int 带查找内容的位置
+ * @param text 需要进行匹配搜索的文本
+ * @param pattern 用于匹配的字符串
+ * @return nc_int32_t 匹配字符串首字母出现位置的索引, -1表示未找到
  */
-int kmp(const char *text, const char *pattern, int *next);
+nc_int32_t kmp(const std::string &text, const std::string &pattern);
 
 #endif
