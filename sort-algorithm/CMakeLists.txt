@@ -1,11 +1,10 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.10)
 
-project(sortTest)
+project(testSort)
 
 add_definitions(-O3 -Wall)
-add_executable(sortTest sortTest.cpp)
-add_library(sort sort.cpp)
+add_executable(testSort test_sort.cc)
 
-target_include_directories(sortTest PUBLIC ../common/include/gtest)
-target_link_directories(sortTest PUBLIC ../common/lib/gtest)
-target_link_libraries(sortTest PUBLIC libgtest.a pthread sort)
+target_include_directories(testSort PUBLIC ${PROJECT_SOURCE_DIR} ../common/include ../common/include/gtest)
+target_link_directories(testSort PUBLIC ../common/lib/gtest)
+target_link_libraries(testSort PUBLIC libgtest.a pthread)

@@ -17,19 +17,19 @@ TEST(testKmp, match)
     string pattern4("");
     string pattern5(" ");
 
-    nc_int32_t ret = kmp(text, pattern);
+    nc_int32_t ret = Kmp(text, pattern);
     EXPECT_EQ(ret, 0);
-    ret = kmp(text, pattern2);
+    ret = Kmp(text, pattern2);
     EXPECT_EQ(ret, -1);
-    ret = kmp(text, pattern3);
+    ret = Kmp(text, pattern3);
     EXPECT_EQ(ret, 11);
-    ret = kmp(text, pattern4);
+    ret = Kmp(text, pattern4);
     EXPECT_EQ(ret, -1);
-    ret = kmp(text2, pattern);
+    ret = Kmp(text2, pattern);
     EXPECT_EQ(ret, -1);
-    ret = kmp(text2, pattern4);
+    ret = Kmp(text2, pattern4);
     EXPECT_EQ(ret, -1);
-    ret = kmp(text3, pattern5);
+    ret = Kmp(text3, pattern5);
     EXPECT_EQ(ret, 2);
 }
 

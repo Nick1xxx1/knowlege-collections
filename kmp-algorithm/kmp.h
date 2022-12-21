@@ -13,6 +13,6 @@
  * @param pattern 用于匹配的字符串
  * @return nc_int32_t 匹配字符串首字母出现位置的索引, -1表示未找到
  */
-nc_int32_t kmp(const std::string &text, const std::string &pattern);
+nc_int32_t Kmp(const std::string &text, const std::string &pattern);
 
 #endif

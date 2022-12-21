@@ -13,4 +13,7 @@ using nc_uint64_t = unsigned long long;
 using nc_int64_t = signed long long;
 using nc_socket_t = signed int;
 
+constexpr nc_int8_t kError = -1;
+constexpr nc_int8_t kOk = 0;
+
 #endif // _KNOWLEGE_COLLECTIONS_TYPES_H_
