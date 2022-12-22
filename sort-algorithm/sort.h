@@ -10,7 +10,6 @@
  */
 
 #include <vector>
-#include <iostream>
 
 #include "types.h"
 

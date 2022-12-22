@@ -3,6 +3,7 @@
 
 using nc_char_t = char;
 using nc_void_t = void;
+using nc_bool_t = bool;
 using nc_uint8_t = unsigned char;
 using nc_int8_t = signed char;
 using nc_uint16_t = unsigned short;
