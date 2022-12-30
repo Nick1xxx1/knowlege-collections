@@ -1,164 +1,150 @@
-extern "C"
-{
-#include "customSys.h"
-}
-#include "gtest/gtest.h"
-
 #include <iostream>
+
+#include "custom_sys_func.h"
+#include "gtest/gtest.h"
 
 using namespace std;
 
-TEST(customTest, memcpyCase)
-{
-    char str1[5] = {0};
-    char str2[] = "abc";
-    char *ret = (char *)customMemcpy(NULL, str2, 3);
-    EXPECT_STREQ(ret, NULL);
-    ret = (char *)customMemcpy(str1, NULL, 3);
-    EXPECT_STREQ(ret, NULL);
-    ret = (char *)customMemcpy(NULL, NULL, 3);
-    EXPECT_STREQ(ret, NULL);
+TEST(customTest, memcpyCase) {
+  nc_char_t str1[5] = {0};
+  nc_char_t str2[] = "abc";
+  nc_char_t *ret = (nc_char_t *)CustomMemcpy(nullptr, str2, 3);
+  EXPECT_STREQ(ret, nullptr);
+  ret = (nc_char_t *)CustomMemcpy(str1, nullptr, 3);
+  EXPECT_STREQ(ret, nullptr);
+  ret = (nc_char_t *)CustomMemcpy(nullptr, nullptr, 3);
+  EXPECT_STREQ(ret, nullptr);
 
-    ret = (char *)customMemcpy(str1, str2, 3);
-    EXPECT_STREQ(str1, str2);
+  ret = (nc_char_t *)CustomMemcpy(str1, str2, 3);
+  EXPECT_STREQ(str1, str2);
 }
 
-TEST(customTest, memmoveCase)
-{
-    char str1[5] = {0};
-    char str2[] = "abc";
+TEST(customTest, memmoveCase) {
+  nc_char_t str1[5] = {0};
+  nc_char_t str2[] = "abc";
 
-    char *ret = (char *)customMemmove(NULL, str2, 3);
-    EXPECT_STREQ(ret, NULL);
-    ret = (char *)customMemmove(str1, NULL, 3);
-    EXPECT_STREQ(ret, NULL);
-    ret = (char *)customMemmove(NULL, NULL, 3);
-    EXPECT_STREQ(ret, NULL);
+  nc_char_t *ret = (nc_char_t *)CustomMemmove(nullptr, str2, 3);
+  EXPECT_STREQ(ret, nullptr);
+  ret = (nc_char_t *)CustomMemmove(str1, nullptr, 3);
+  EXPECT_STREQ(ret, nullptr);
+  ret = (nc_char_t *)CustomMemmove(nullptr, nullptr, 3);
+  EXPECT_STREQ(ret, nullptr);
 
-    ret = (char *)customMemmove(str1, str2, 3);
-    EXPECT_STREQ(str1, str2);
+  ret = (nc_char_t *)CustomMemmove(str1, str2, 3);
+  EXPECT_STREQ(str1, str2);
 }
 
-TEST(customTest, strcatCase)
-{
-    char src[50] = "this is source";
-    char dest[50] = "this is destination";
+TEST(customTest, strcatCase) {
+  nc_char_t src[50] = "this is source";
+  nc_char_t dest[50] = "this is destination";
 
-    char *ret = customStrcat(NULL, src);
-    EXPECT_STREQ(ret, NULL);
-    ret = customStrcat(dest, NULL);
-    EXPECT_STREQ(ret, NULL);
-    ret = customStrcat(NULL, NULL);
-    EXPECT_STREQ(ret, NULL);
+  nc_char_t *ret = CustomStrcat(nullptr, src);
+  EXPECT_STREQ(ret, nullptr);
+  ret = CustomStrcat(dest, nullptr);
+  EXPECT_STREQ(ret, nullptr);
+  ret = CustomStrcat(nullptr, nullptr);
+  EXPECT_STREQ(ret, nullptr);
 
-    ret = customStrcat(dest, src);
-    EXPECT_STREQ(ret, "this is destinationthis is source");
-    EXPECT_STREQ(dest, "this is destinationthis is source");
-    EXPECT_STREQ(src, "this is source");
+  ret = CustomStrcat(dest, src);
+  EXPECT_STREQ(ret, "this is destinationthis is source");
+  EXPECT_STREQ(dest, "this is destinationthis is source");
+  EXPECT_STREQ(src, "this is source");
 }
 
-TEST(customTest, strcpyCase)
-{
-    char src[50] = {0};
-    char dest[50] = {0};
+TEST(customTest, strcpyCase) {
+  nc_char_t src[50] = {0};
+  nc_char_t dest[50] = {0};
 
-    char *ret = customStrcpy(NULL, src);
-    EXPECT_STREQ(ret, NULL);
-    ret = customStrcpy(dest, NULL);
-    EXPECT_STREQ(ret, NULL);
-    ret = customStrcpy(NULL, NULL);
-    EXPECT_STREQ(ret, NULL);
+  nc_char_t *ret = CustomStrcpy(nullptr, src);
+  EXPECT_STREQ(ret, nullptr);
+  ret = CustomStrcpy(dest, nullptr);
+  EXPECT_STREQ(ret, nullptr);
+  ret = CustomStrcpy(nullptr, nullptr);
+  EXPECT_STREQ(ret, nullptr);
 
-    ret = customStrcpy(dest, "this is destination");
-    EXPECT_STREQ(ret, "this is destination");
-    EXPECT_STREQ(dest, "this is destination");
+  ret = CustomStrcpy(dest, "this is destination");
+  EXPECT_STREQ(ret, "this is destination");
+  EXPECT_STREQ(dest, "this is destination");
 }
 
-TEST(customTest, strcmpCase)
-{
-    char big[50] = "c";
-    char small[50] = "a";
-    char small2[50] = "a";
+TEST(customTest, strcmpCase) {
+  nc_char_t big[50] = "c";
+  nc_char_t small[50] = "a";
+  nc_char_t small2[50] = "a";
 
-    int ret = customStrcmp(big, small);
-    EXPECT_EQ(ret, 1);
-    ret = customStrcmp(small, big);
-    EXPECT_EQ(ret, -1);
-    ret = customStrcmp(small, small2);
-    EXPECT_EQ(ret, 0);
+  nc_int32_t ret = CustomStrcmp(big, small);
+  EXPECT_EQ(ret, 1);
+  ret = CustomStrcmp(small, big);
+  EXPECT_EQ(ret, -1);
+  ret = CustomStrcmp(small, small2);
+  EXPECT_EQ(ret, 0);
 }
 
-TEST(customTest, strncmpCase)
-{
-    char src[50] = "this is source";
-    char dest[50] = "this is destination";
+TEST(customTest, strncmpCase) {
+  nc_char_t src[50] = "this is source";
+  nc_char_t dest[50] = "this is destination";
 
-    int ret = customStrncmp(src, dest, 4);
-    EXPECT_EQ(ret, 0);
-    ret = customStrncmp(src, dest, 0);
-    EXPECT_EQ(ret, 0);
-    ret = customStrncmp(src, dest, 10);
-    EXPECT_GT(ret, 0);
-    ret = customStrncmp(dest, src, 10);
-    EXPECT_LT(ret, 0);
+  nc_int32_t ret = CustomStrncmp(src, dest, 4);
+  EXPECT_EQ(ret, 0);
+  ret = CustomStrncmp(src, dest, 0);
+  EXPECT_EQ(ret, 0);
+  ret = CustomStrncmp(src, dest, 10);
+  EXPECT_GT(ret, 0);
+  ret = CustomStrncmp(dest, src, 10);
+  EXPECT_LT(ret, 0);
 }
 
-TEST(customTest, strlenCase)
-{
-    char src[50] = "this is source";
+TEST(customTest, strlenCase) {
+  nc_char_t src[50] = "this is source";
 
-    size_t ret = customStrlen(NULL);
-    EXPECT_EQ(ret, 0);
-    ret = customStrlen(src);
-    EXPECT_EQ(ret, 14);
+  nc_uint32_t ret = CustomStrlen(nullptr);
+  EXPECT_EQ(ret, static_cast<nc_uint32_t>(0));
+  ret = CustomStrlen(src);
+  EXPECT_EQ(ret, static_cast<nc_uint32_t>(14));
 }
 
-TEST(customTest, strstrCase)
-{
-    char src[50] = "this is source";
+TEST(customTest, strstrCase) {
+  nc_char_t src[50] = "this is source";
 
-    char *ret = customStrstr(src, NULL);
-    EXPECT_STREQ(ret, NULL);
-    ret = customStrstr(src, "");
-    EXPECT_STREQ(ret, src);
-    ret = customStrstr(src, "is");
-    EXPECT_STREQ(ret, "is is source");
-    ret = customStrstr(src, "src");
-    EXPECT_STREQ(ret, NULL);
+  nc_char_t *ret = CustomStrstr(src, nullptr);
+  EXPECT_STREQ(ret, nullptr);
+  ret = CustomStrstr(src, "");
+  EXPECT_STREQ(ret, src);
+  ret = CustomStrstr(src, "is");
+  EXPECT_STREQ(ret, "is is source");
+  ret = CustomStrstr(src, "src");
+  EXPECT_STREQ(ret, nullptr);
 }
 
-TEST(customTest, atoiCase)
-{
-    char str[5] = "1234";
-    char str2[5] = "abcd";
-    char str3[] = "2147483649";
-    char str4[] = "-2147483649";
+TEST(customTest, atoiCase) {
+  nc_char_t str[5] = "1234";
+  nc_char_t str2[5] = "abcd";
+  nc_char_t str3[] = "2147483649";
+  nc_char_t str4[] = "-2147483649";
 
-    int ret = customAtoi(str);
-    EXPECT_EQ(ret, 1234);
-    ret = customAtoi(str2);
-    EXPECT_EQ(ret, 0);
-    ret = customAtoi(str3);
-    EXPECT_EQ(ret, 0);
-    ret = customAtoi(str4);
-    EXPECT_EQ(ret, 0);
+  nc_int32_t ret = CustomAtoi(str);
+  EXPECT_EQ(ret, 1234);
+  ret = CustomAtoi(str2);
+  EXPECT_EQ(ret, 0);
+  ret = CustomAtoi(str3);
+  EXPECT_EQ(ret, 0);
+  ret = CustomAtoi(str4);
+  EXPECT_EQ(ret, 0);
 }
 
-TEST(customTest, memmetCase)
-{
-    char str[5] = "abcd";
+TEST(customTest, memmetCase) {
+  nc_char_t str[5] = "abcd";
 
-    char *ret = (char *)customMemset(NULL, 0, 5);
-    EXPECT_STRNE(str, NULL);
-    EXPECT_STREQ(ret, NULL);
-    ret = (char *)customMemset(str, 0, sizeof(str));
-    EXPECT_STREQ(ret, "");
-    EXPECT_STREQ(str, "");
+  nc_char_t *ret = (nc_char_t *)CustomMemset(nullptr, 0, 5);
+  EXPECT_STRNE(str, nullptr);
+  EXPECT_STREQ(ret, nullptr);
+  ret = (nc_char_t *)CustomMemset(str, 0, sizeof(str));
+  EXPECT_STREQ(ret, "");
+  EXPECT_STREQ(str, "");
 }
 
-int main(int argc, char **argv)
-{
-    printf("Running main() from %s\n\n", __FILE__);
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+nc_int32_t main(nc_int32_t argc, nc_char_t **argv) {
+  printf("Running main() from %s\n\n", __FILE__);
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
