@@ -9,7 +9,6 @@ using std::vector;
 TEST(testBinarySearchTree, testCreateAndDestory) {
   vector<VALUE_TYPE> dataset = {24, 25, 13};
   BSTree *bs_tree = new BSTree;
-  bs_tree->root = nullptr;
   for (auto data : dataset) {
     EXPECT_EQ(bstree_insert(bs_tree, data), kOk);
   }
@@ -21,7 +20,6 @@ TEST(testBinarySearchTree, testCreateAndDestory) {
 TEST(testBinarySearchTree, testTraversePrev) {
   vector<VALUE_TYPE> dataset = {24, 25, 13};
   BSTree *bs_tree = new BSTree;
-  bs_tree->root = nullptr;
   for (auto data : dataset) {
     bstree_insert(bs_tree, data);
   }
@@ -37,7 +35,6 @@ TEST(testBinarySearchTree, testTraversePrev) {
 TEST(testBinarySearchTree, testTraverseMid) {
   vector<VALUE_TYPE> dataset = {24, 25, 13};
   BSTree *bs_tree = new BSTree;
-  bs_tree->root = nullptr;
   for (auto data : dataset) {
     bstree_insert(bs_tree, data);
   }
@@ -53,7 +50,6 @@ TEST(testBinarySearchTree, testTraverseMid) {
 TEST(testBinarySearchTree, testTraverseTail) {
   vector<VALUE_TYPE> dataset = {24, 25, 13};
   BSTree *bs_tree = new BSTree;
-  bs_tree->root = nullptr;
   for (auto data : dataset) {
     bstree_insert(bs_tree, data);
   }
@@ -69,7 +65,6 @@ TEST(testBinarySearchTree, testTraverseTail) {
 TEST(testBinarySearchTree, testTraverseLevel) {
   vector<VALUE_TYPE> dataset = {24, 25, 13};
   BSTree *bs_tree = new BSTree;
-  bs_tree->root = nullptr;
   for (auto data : dataset) {
     bstree_insert(bs_tree, data);
   }
@@ -78,6 +73,25 @@ TEST(testBinarySearchTree, testTraverseLevel) {
   vector<VALUE_TYPE> res = bstree_traverse(bs_tree, TraverseType::kLevel);
 
   EXPECT_EQ(expect, res);
+
+  bstree_destory(&bs_tree);
+}
+
+TEST(testBinarySearchTree, testSearch) {
+  vector<VALUE_TYPE> dataset = {24, 25, 13};
+  BSTree *bs_tree = new BSTree;
+  for (auto data : dataset) {
+    bstree_insert(bs_tree, data);
+  }
+
+  BSTreeNode *node = bstree_search(bs_tree, 13);
+  EXPECT_EQ(node->data, 13);
+
+  node = bstree_search(bs_tree, 3);
+  EXPECT_EQ(node, nullptr);
+
+  node = bstree_search(nullptr, 3);
+  EXPECT_EQ(node, nullptr);
 
   bstree_destory(&bs_tree);
 }

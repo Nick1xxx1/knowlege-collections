@@ -107,6 +107,36 @@ nc_int8_t bstree_insert(BSTree *bs_tree, VALUE_TYPE value) {
   return kOk;
 }
 
+nc_int8_t bstree_delete(BSTree *bs_tree, VALUE_TYPE value) {
+  
+  return kOk;
+}
+
+BSTreeNode *bstree_search(BSTree *bs_tree, VALUE_TYPE value) {
+  if (!bs_tree || !bs_tree->root) {
+    return nullptr;
+  }
+
+  BSTreeNode *node = bs_tree->root;
+  while (node) {
+    if (node->data == value) {
+      return node;
+    }
+
+    if (node->data > value) {
+      node = node->bst.left;
+    } else {
+      node = node->bst.right;
+    }
+  }
+
+  return nullptr;
+}
+
+nc_int8_t bstree_modify(BSTree *bs_tree, VALUE_TYPE search_value, VALUE_TYPE mod_value) {
+  return kOk;
+}
+
 static void bstree_destory_node(BSTreeNode *bs_tree_node) {
   if (!bs_tree_node) {
     return;
