@@ -3,12 +3,12 @@
 
 #include "types.h"
 
-enum class NodeColor {
+enum class NodeColor : nc_uint8_t {
   kRed = 0,
   kBlack
 };
 
-typedef nc_int32_t VALUE_TYPE;
+typedef nc_int32_t KEY_TYPE;
 
 #define RBTREE_ENTRY(name, type) \
   struct name {                  \
@@ -18,9 +18,15 @@ typedef nc_int32_t VALUE_TYPE;
   }
 
 typedef struct RBTreeNode {
-  VALUE_TYPE value;
+  KEY_TYPE value;
+  void *data;
   NodeColor node_color;
   RBTREE_ENTRY(, RBTreeNode) rbt;
 } RBTreeNode;
+
+typedef struct RBTree {
+  RBTreeNode *root;
+  RBTreeNode *nil;
+} RBTree;
 
 #endif // _RB_TREE_H_
