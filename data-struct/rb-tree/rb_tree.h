@@ -18,8 +18,8 @@ typedef nc_int32_t KEY_TYPE;
   }
 
 typedef struct RBTreeNode {
-  KEY_TYPE value;
-  void *data;
+  KEY_TYPE key;
+  void *value;
   NodeColor node_color;
   RBTREE_ENTRY(, RBTreeNode) rbt;
 } RBTreeNode;
