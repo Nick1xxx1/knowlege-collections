@@ -86,12 +86,14 @@ nc_int8_t BSTreeInsert(BSTree *bs_tree, KEY_TYPE key) {
     return kError;
   }
 
+  // 根节点为空, 直接创建根节点
   if (!bs_tree->root) {
     bs_tree->root = BSTreeCreateNode(key);
     return kOk;
   }
 
   BSTreeNode *node = bs_tree->root;
+  // 用于记录上一个node
   BSTreeNode *tmp = nullptr;
 
   while (node) {
@@ -122,27 +124,36 @@ static BSTreeNode *BSTreeDeleteNode(BSTreeNode *root, KEY_TYPE key) {
   }
 
   if (key > root->key) {
+    // 比当前节点的键大, 则去右子树查找
     root->bst.right = BSTreeDeleteNode(root->bst.right, key);
   } else if (key < root->key) {
+    // 比当前节点的键小, 则去左子树查找
     root->bst.left = BSTreeDeleteNode(root->bst.left, key);
   } else {
+    // 当前节点就是要删除的节点
     if (!root->bst.left) {
+      // 左子树为空, 直接返回右子树
       BSTreeNode *right_node = root->bst.right;
       delete root;
       return right_node;
     }
 
     if (!root->bst.right) {
+      // 右子树为空, 直接返回左子树
       BSTreeNode *left_node = root->bst.right;
       delete root;
       return left_node;
     }
     
+    // 左右子树均不为空, 则查找到右子树的最左节点
     BSTreeNode *node = root->bst.right;
     while (node->bst.left) {
       node = node->bst.left;
     }
+
+    // 将打算删除的节点的左子树作为找到的最左节点的左子树
     node->bst.left = root->bst.left;
+    // 用右子树节点替换打算删除的节点
     BSTreeNode *right_node = root->bst.right;
     delete root;
     root = right_node;
@@ -156,6 +167,7 @@ BSTreeNode *BSTreeDelete(BSTree *bs_tree, KEY_TYPE key) {
     return nullptr;
   }
 
+  // 先搜索是否存在, 若不存在则直接返回根节点
   BSTreeNode *node = BSTreeSearch(bs_tree, key);
   if (!node) {
     return bs_tree->root;
@@ -187,6 +199,10 @@ BSTreeNode *BSTreeSearch(BSTree *bs_tree, KEY_TYPE key) {
 }
 
 nc_int8_t BSTreeModify(BSTree *bs_tree, KEY_TYPE search_key, void *mod_value) {
+  if (!bs_tree || !bs_tree->root) {
+    return kError;
+  }
+
   BSTreeNode *node = BSTreeSearch(bs_tree, search_key);
   if (!node) {
     return kError;
@@ -202,11 +218,13 @@ static void BSTreeDestroyNode(BSTreeNode *bs_tree_node) {
     return;
   }
 
+  // 若左子树存在, 则一直递归删除左子树
   if (bs_tree_node->bst.left) {
     BSTreeDestroyNode(bs_tree_node->bst.left);
     bs_tree_node->bst.left = nullptr;
   }
 
+  // 若右子树存在, 则一直递归删除右子树
   if (bs_tree_node->bst.right) {
     BSTreeDestroyNode(bs_tree_node->bst.right);
     bs_tree_node->bst.right = nullptr;
