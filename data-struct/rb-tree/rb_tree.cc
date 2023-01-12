@@ -4,8 +4,9 @@
  * @brief 销毁红黑树的某个节点
  * 
  * @param node 待销毁的节点
+ * @param nil_node 空节点
  */
-static void RBTreeDestoryNode(RBTreeNode *node);
+static void RBTreeDestoryNode(RBTreeNode *node, RBTreeNode *nil_node);
 
 /**
  * @brief 左旋函数
@@ -57,20 +58,20 @@ static RBTreeNode *RBTreeSuccessor(RBTree *rb_tree, RBTreeNode *node);
  */
 static void RBTreeDeleteAdjust(RBTree *rb_tree, RBTreeNode *node);
 
-static void RBTreeDestoryNode(RBTreeNode *node) {
+static void RBTreeDestoryNode(RBTreeNode *node, RBTreeNode *nil_node) {
   if (!node) {
     return;
   }
 
   // 若左子树存在, 则一直递归删除左子树
-  if (node->rbt.left) {
-    RBTreeDestoryNode(node->rbt.left);
+  if (node->rbt.left != nil_node) {
+    RBTreeDestoryNode(node->rbt.left, nil_node);
     node->rbt.left = nullptr;
   }
 
   // 若右子树存在, 则一直递归删除右子树
-  if (node->rbt.right) {
-    RBTreeDestoryNode(node->rbt.right);
+  if (node->rbt.right != nil_node) {
+    RBTreeDestoryNode(node->rbt.right, nil_node);
     node->rbt.right = nullptr;
   }
 
@@ -309,9 +310,9 @@ void RBTreeDestory(RBTree *rb_tree) {
     return;
   }
 
-  RBTreeNode *root = rb_tree->root;
-  RBTreeDestoryNode(root);
+  RBTreeDestoryNode(rb_tree->root, rb_tree->nil);
 
+  delete rb_tree->nil;
   delete rb_tree;
 }
 
