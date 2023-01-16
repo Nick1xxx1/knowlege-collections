@@ -103,7 +103,7 @@ TEST(testBinarySearchTree, testDeleteMiddle) {
     BSTreeInsert(bs_tree, data);
   }
 
-  bs_tree->root = BSTreeDelete(bs_tree, 3);
+  BSTreeDelete(bs_tree, 3);
   vector<KEY_TYPE> expect = {5, 4, 6, 2, 7};
   vector<KEY_TYPE> res = BSTreeTraverse(bs_tree, TraverseType::kLevel);
 
@@ -117,7 +117,7 @@ TEST(testBinarySearchTree, testDeleteNotExist) {
     BSTreeInsert(bs_tree, data);
   }
 
-  bs_tree->root = BSTreeDelete(bs_tree, 11);
+  BSTreeDelete(bs_tree, 11);
   vector<KEY_TYPE> expect = {5, 3, 6, 2, 4, 7};
   vector<KEY_TYPE> res = BSTreeTraverse(bs_tree, TraverseType::kLevel);
 
@@ -131,7 +131,7 @@ TEST(testBinarySearchTree, testDeleteRoot) {
     BSTreeInsert(bs_tree, data);
   }
 
-  bs_tree->root = BSTreeDelete(bs_tree, 5);
+  BSTreeDelete(bs_tree, 5);
   vector<KEY_TYPE> expect = {6, 3, 7, 2, 4};
   vector<KEY_TYPE> res = BSTreeTraverse(bs_tree, TraverseType::kLevel);
 
@@ -145,7 +145,7 @@ TEST(testBinarySearchTree, testDeleteLeaf) {
     BSTreeInsert(bs_tree, data);
   }
 
-  bs_tree->root = BSTreeDelete(bs_tree, 7);
+  BSTreeDelete(bs_tree, 7);
   vector<KEY_TYPE> expect = {5, 3, 6, 2, 4};
   vector<KEY_TYPE> res = BSTreeTraverse(bs_tree, TraverseType::kLevel);
 

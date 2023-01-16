@@ -40,9 +40,8 @@ nc_int8_t BSTreeInsert(BSTree *bs_tree, KEY_TYPE key);
  * 
  * @param bs_tree 待删除值的二叉搜索树
  * @param key 指定需要删除的键
- * @return BSTreeNode* 删除节点后的根节点
  */
-BSTreeNode *BSTreeDelete(BSTree *bs_tree, KEY_TYPE key);
+void BSTreeDelete(BSTree *bs_tree, KEY_TYPE key);
 
 /**
  * @brief 查找二叉搜索树中的特定键, 并返回该键对应的节点

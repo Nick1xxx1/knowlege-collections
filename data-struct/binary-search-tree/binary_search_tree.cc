@@ -162,19 +162,19 @@ static BSTreeNode *BSTreeDeleteNode(BSTreeNode *root, KEY_TYPE key) {
   return root;
 }
 
-BSTreeNode *BSTreeDelete(BSTree *bs_tree, KEY_TYPE key) {
+void BSTreeDelete(BSTree *bs_tree, KEY_TYPE key) {
   if (!bs_tree || !bs_tree->root) {
-    return nullptr;
+    return;
   }
 
   // 先搜索是否存在, 若不存在则直接返回根节点
   BSTreeNode *node = BSTreeSearch(bs_tree, key);
   if (!node) {
-    return bs_tree->root;
+    return;
   }
 
   BSTreeNode *root = bs_tree->root;
-  return BSTreeDeleteNode(root, key);
+  bs_tree->root = BSTreeDeleteNode(root, key);
 }
 
 BSTreeNode *BSTreeSearch(BSTree *bs_tree, KEY_TYPE key) {

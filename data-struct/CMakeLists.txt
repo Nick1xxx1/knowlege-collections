@@ -6,3 +6,4 @@ add_definitions(-Wall)
 
 add_subdirectory(binary-search-tree)
 add_subdirectory(rb-tree)
+add_subdirectory(b-tree)

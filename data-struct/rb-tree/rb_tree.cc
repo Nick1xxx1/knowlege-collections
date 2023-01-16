@@ -1,7 +1,9 @@
 #include "rb_tree.h"
 
+#include <cassert>
+
 /**
- * @brief 销毁红黑树的某个节点
+ * @brief 销毁红黑树的某个节点, 包括的左右子树
  * 
  * @param node 待销毁的节点
  * @param nil_node 空节点
@@ -54,9 +56,9 @@ static RBTreeNode *RBTreeSuccessor(RBTree *rb_tree, RBTreeNode *node);
  * @brief 红黑树删除节点后的调整函数
  * 
  * @param rb_tree 待调整的红黑树
- * @param node 删除后的调整节点
+ * @param adjust_node 待调整的节点
  */
-static void RBTreeDeleteAdjust(RBTree *rb_tree, RBTreeNode *node);
+static void RBTreeDeleteAdjust(RBTree *rb_tree, RBTreeNode *adjust_node);
 
 static void RBTreeDestoryNode(RBTreeNode *node, RBTreeNode *nil_node) {
   if (!node) {
@@ -223,68 +225,72 @@ static RBTreeNode *RBTreeSuccessor(RBTree *rb_tree, RBTreeNode *node) {
   return successor_node;
 }
 
-static void RBTreeDeleteAdjust(RBTree *rb_tree, RBTreeNode *node) {
-  while ((node != rb_tree->nil) && (node->node_color == NodeColor::kBlack)) {
-    if (node == node->rbt.parent->rbt.left) {
-      RBTreeNode *tmp_node = node->rbt.parent->rbt.right;
-      if (tmp_node->node_color == NodeColor::kRed) {
-        tmp_node->node_color = NodeColor::kBlack;
-        node->rbt.parent->node_color = NodeColor::kRed;
+static void RBTreeDeleteAdjust(RBTree *rb_tree, RBTreeNode *adjust_node) {
+  if (!rb_tree || !rb_tree->root || !adjust_node) {
+    assert(0);
+    return;
+  }
 
-        RBTreeLeftRotate(rb_tree, node->rbt.parent);
-        tmp_node = node->rbt.parent->rbt.right;
+  RBTreeNode *sibling_node = rb_tree->nil;
+  while ((adjust_node != rb_tree->root) && (adjust_node->node_color == NodeColor::kBlack)) {
+    if (adjust_node == adjust_node->rbt.parent->rbt.left) {
+      sibling_node = adjust_node->rbt.parent->rbt.right;
+      if (sibling_node->node_color == NodeColor::kRed) {
+        sibling_node->node_color = NodeColor::kBlack;
+        adjust_node->rbt.parent->node_color = NodeColor::kRed;
+        RBTreeLeftRotate(rb_tree, adjust_node->rbt.parent);
+        sibling_node = adjust_node->rbt.parent->rbt.right;
       }
 
-      if ((tmp_node->rbt.left->node_color == NodeColor::kBlack) && (tmp_node->rbt.right->node_color == NodeColor::kBlack)) {
-        tmp_node->node_color = NodeColor::kRed;
-        node = node->rbt.parent;
+      if ((sibling_node->rbt.left->node_color == NodeColor::kBlack) &&
+          (sibling_node->rbt.right->node_color == NodeColor::kBlack)) {
+        sibling_node->node_color = NodeColor::kRed;
+        adjust_node = adjust_node->rbt.parent;
       } else {
-        if (tmp_node->rbt.right->node_color == NodeColor::kBlack) {
-          tmp_node->rbt.left->node_color = NodeColor::kBlack;
-          tmp_node->node_color = NodeColor::kRed;
-          RBTreeRightRotate(rb_tree, tmp_node);
-          tmp_node = node->rbt.parent->rbt.right;
+        if (sibling_node->rbt.right->node_color == NodeColor::kBlack) {
+          sibling_node->rbt.left->node_color = NodeColor::kBlack;
+          sibling_node->node_color = NodeColor::kRed;
+          RBTreeRightRotate(rb_tree, sibling_node);
+          sibling_node = adjust_node->rbt.parent->rbt.right;
         }
 
-        tmp_node->node_color = node->rbt.parent->node_color;
-        node->rbt.parent->node_color = NodeColor::kBlack;
-        tmp_node->rbt.right->node_color = NodeColor::kBlack;
-        RBTreeLeftRotate(rb_tree, node->rbt.parent);
-
-        node = rb_tree->root;
+        sibling_node->rbt.right->node_color = NodeColor::kBlack;
+        sibling_node->node_color = adjust_node->rbt.parent->node_color;
+        adjust_node->rbt.parent->node_color = NodeColor::kBlack;
+        RBTreeLeftRotate(rb_tree, adjust_node->rbt.parent);
+        adjust_node = rb_tree->root;
       }
     } else {
-      RBTreeNode *tmp_node = node->rbt.parent->rbt.left;
-      if (tmp_node->node_color == NodeColor::kRed) {
-        tmp_node->node_color = NodeColor::kBlack;
-        node->rbt.parent->node_color = NodeColor::kRed;
-
-        RBTreeRightRotate(rb_tree, node->rbt.parent);
-        tmp_node = node->rbt.parent->rbt.left;
+      sibling_node = adjust_node->rbt.parent->rbt.left;
+      if (sibling_node->node_color == NodeColor::kRed) {
+        sibling_node->node_color = NodeColor::kBlack;
+        adjust_node->rbt.parent->node_color = NodeColor::kRed;
+        RBTreeRightRotate(rb_tree, adjust_node->rbt.parent);
+        sibling_node = adjust_node->rbt.parent->rbt.left;
       }
 
-      if ((tmp_node->rbt.left->node_color == NodeColor::kBlack) && (tmp_node->rbt.right->node_color == NodeColor::kBlack)) {
-        tmp_node->node_color = NodeColor::kRed;
-        node = node->rbt.parent;
+      if ((sibling_node->rbt.left->node_color == NodeColor::kBlack) &&
+          (sibling_node->rbt.right->node_color == NodeColor::kBlack)) {
+        sibling_node->node_color = NodeColor::kRed;
+        adjust_node = adjust_node->rbt.parent;
       } else {
-        if (tmp_node->rbt.left->node_color == NodeColor::kBlack) {
-          tmp_node->rbt.right->node_color = NodeColor::kBlack;
-          tmp_node->node_color = NodeColor::kRed;
-          RBTreeLeftRotate(rb_tree, tmp_node);
-          tmp_node = node->rbt.parent->rbt.left;
+        if (sibling_node->rbt.left->node_color == NodeColor::kBlack) {
+          sibling_node->rbt.right->node_color = NodeColor::kBlack;
+          sibling_node->node_color = NodeColor::kRed;
+          RBTreeLeftRotate(rb_tree, sibling_node);
+          sibling_node = adjust_node->rbt.parent->rbt.left;
         }
 
-        tmp_node->node_color = node->rbt.parent->node_color;
-        node->rbt.parent->node_color = NodeColor::kBlack;
-        tmp_node->rbt.left->node_color = NodeColor::kBlack;
-        RBTreeRightRotate(rb_tree, node->rbt.parent);
-
-        node = rb_tree->root;
+        sibling_node->rbt.left->node_color = NodeColor::kBlack;
+        sibling_node->node_color = adjust_node->rbt.parent->node_color;
+        adjust_node->rbt.parent->node_color = NodeColor::kBlack;
+        RBTreeRightRotate(rb_tree, adjust_node->rbt.parent);
+        adjust_node = rb_tree->root;
       }
     }
   }
 
-  node->node_color = NodeColor::kBlack;
+  adjust_node->node_color = NodeColor::kBlack;
 }
 
 RBTree *RBTreeCreate() {
@@ -350,45 +356,46 @@ void RBTreeInsert(RBTree *rb_tree, RBTreeNode *insert_node) {
   RBTreeInsertAdjust(rb_tree, insert_node);
 }
 
-RBTreeNode *RBTreeDelete(RBTree *rb_tree, RBTreeNode *node) {
-  if (!rb_tree || !node) {
-    return nullptr;
+void RBTreeDelete(RBTree *rb_tree, RBTreeNode *replace_node) {
+  if (!rb_tree || !rb_tree->nil || !rb_tree->root || !replace_node) {
+    return;
   }
 
-  RBTreeNode *del_node = rb_tree->nil;
-  RBTreeNode *adjust_node = rb_tree->nil;
-
-  if (del_node->rbt.left == rb_tree->nil || del_node->rbt.right == rb_tree->nil) {
-    del_node = node;
+  RBTreeNode *delete_node = rb_tree->nil;
+  if ((replace_node->rbt.left == rb_tree->nil) || (replace_node->rbt.right == rb_tree->nil)) {
+    delete_node = replace_node;
   } else {
-    del_node = RBTreeSuccessor(rb_tree, node);
+    delete_node = RBTreeSuccessor(rb_tree, replace_node);
   }
 
-  if (del_node->rbt.left != rb_tree->nil) {
-    adjust_node = del_node->rbt.left;
-  } else if (del_node->rbt.right != rb_tree->nil) {
-    adjust_node = del_node->rbt.right;
+  RBTreeNode *adjust_node;
+  if (delete_node->rbt.left != rb_tree->nil) {
+    adjust_node = delete_node->rbt.left;
+  } else if (delete_node->rbt.right != rb_tree->nil) {
+    adjust_node = delete_node->rbt.right;
+  } else {
+    adjust_node = rb_tree->nil;
   }
 
-  adjust_node->rbt.parent = del_node->rbt.parent;
-  if (del_node->rbt.parent == rb_tree->nil) {
+  adjust_node->rbt.parent = delete_node->rbt.parent;
+  if (delete_node->rbt.parent == rb_tree->nil) {
     rb_tree->root = adjust_node;
-  } else if (del_node == del_node->rbt.parent->rbt.left) {
-    del_node->rbt.parent->rbt.left = adjust_node;
+  } else if (delete_node == delete_node->rbt.parent->rbt.left) {
+    delete_node->rbt.parent->rbt.left = adjust_node;
   } else {
-    del_node->rbt.parent->rbt.right = adjust_node;
+    delete_node->rbt.parent->rbt.right = adjust_node;
   }
 
-  if (del_node != node) {
-    node->key = del_node->key;
-    node->value = del_node->value;
+  if (delete_node != replace_node) {
+    replace_node->key = delete_node->key;
+    replace_node->value = delete_node->value;
   }
 
-  if (del_node->node_color == NodeColor::kBlack) {
+  if (delete_node->node_color == NodeColor::kBlack) {
     RBTreeDeleteAdjust(rb_tree, adjust_node);
   }
 
-  return del_node;
+  delete delete_node;
 }
 
 RBTreeNode *RBTreeSearch(RBTree *rb_tree, KEY_TYPE key) {

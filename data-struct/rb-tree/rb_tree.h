@@ -55,10 +55,9 @@ void RBTreeInsert(RBTree *rb_tree, RBTreeNode *insert_node);
  * @brief 删除红黑树中的节点
  * 
  * @param rb_tree 待删除节点的红黑树
- * @param del_node 需要删除的节点
- * @return RBTreeNode* 删除后得到的节点
+ * @param replace_node 需要删除的节点, 实际上进行替换的节点
  */
-RBTreeNode *RBTreeDelete(RBTree *rb_tree, RBTreeNode *del_node);
+void RBTreeDelete(RBTree *rb_tree, RBTreeNode *replace_node);
 
 /**
  * @brief 根据键查找红黑树中的节点
