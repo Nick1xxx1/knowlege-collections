@@ -24,9 +24,8 @@ int main(int argc, char **argv) {
                                 20, 19, 17, 49, 12, 21, 9,  18, 14, 15};
   RBTree *rb_tree = RBTreeCreate();
 
-  RBTreeNode *node = rb_tree->nil;
   for (nc_uint32_t i = 0; i != key_arr.size(); ++i) {
-    node = new RBTreeNode;
+    RBTreeNode *node = new RBTreeNode;
     node->key = key_arr[i];
     node->value = nullptr;
 
@@ -34,6 +33,17 @@ int main(int argc, char **argv) {
   }
 
   RBTreeTraverse(rb_tree, rb_tree->root);
+
+  cout << "----------------------------------------" << endl;
+
+	for (nc_uint32_t i = 0; i != key_arr.size(); ++i) {
+
+		RBTreeNode *node = RBTreeSearch(rb_tree, key_arr[i]);
+    RBTreeDelete(rb_tree, node);
+
+		RBTreeTraverse(rb_tree, rb_tree->root);
+		cout << "----------------------------------------" << endl;
+	}
 
   RBTreeDestory(rb_tree);
 

@@ -61,25 +61,25 @@ static RBTreeNode *RBTreeSuccessor(RBTree *rb_tree, RBTreeNode *node);
 static void RBTreeDeleteAdjust(RBTree *rb_tree, RBTreeNode *adjust_node);
 
 static void RBTreeDestoryNode(RBTreeNode *node, RBTreeNode *nil_node) {
-  if (!node) {
+  if (!node || node == nil_node) {
     return;
   }
 
   // 若左子树存在, 则一直递归删除左子树
   if (node->rbt.left != nil_node) {
     RBTreeDestoryNode(node->rbt.left, nil_node);
-    node->rbt.left = nullptr;
+    node->rbt.left = nil_node;
   }
 
   // 若右子树存在, 则一直递归删除右子树
   if (node->rbt.right != nil_node) {
     RBTreeDestoryNode(node->rbt.right, nil_node);
-    node->rbt.right = nullptr;
+    node->rbt.right = nil_node;
   }
 
-  if (node) {
+  if (node != nil_node) {
     delete node;
-    node = nullptr;
+    node = nil_node;
   }
 }
 
@@ -201,7 +201,7 @@ static void RBTreeInsertAdjust(RBTree *rb_tree, RBTreeNode *adjust_node) {
 
 static RBTreeNode *RBTreeMini(RBTree *rb_tree, RBTreeNode *node) {
   if (!rb_tree || !node) {
-    return nullptr;
+    return rb_tree->nil;
   }
 
   while (node->rbt.left != rb_tree->nil) {
@@ -396,6 +396,7 @@ void RBTreeDelete(RBTree *rb_tree, RBTreeNode *replace_node) {
   }
 
   delete delete_node;
+  delete_node = rb_tree->nil;
 }
 
 RBTreeNode *RBTreeSearch(RBTree *rb_tree, KEY_TYPE key) {
