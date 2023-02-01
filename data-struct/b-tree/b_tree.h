@@ -8,7 +8,7 @@ enum class NodeType : nc_uint8_t {
   kNormal
 };
 
-constexpr nc_uint32_t kDegree = 5;
+constexpr nc_int32_t kOrder = 6;
 
 using KEY_TYPE = nc_int32_t;
 
@@ -17,17 +17,19 @@ typedef struct BTreeNode {
   BTreeNode **children;
 
   NodeType type;
-  nc_uint32_t key_num;
+  nc_int32_t key_num;
 
   BTreeNode() : keys(nullptr), children(nullptr), type(NodeType::kNormal), key_num(0) {}
 } BTreeNode;
 
 typedef struct BTree {
   BTreeNode *root;
-  nc_uint32_t degree; // 度, 值为阶数的二分之一
+  nc_int32_t degree; // 度, 值为阶数的二分之一
 
   BTree() : root(nullptr), degree(0) {}
 } BTree;
+
+BTree *BTreeCreate();
 
 void BTreeDestory(BTree *b_tree);
 

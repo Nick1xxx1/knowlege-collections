@@ -5,11 +5,10 @@
 /**
  * @brief 创建新的B-树节点
  * 
- * @param degree B-树的度, 为阶数的一半
  * @param node_type 节点的类型, 分为为普通节点(非叶子节点)和叶子节点
  * @return BTreeNode* 新创建的B-树节点
  */
-static BTreeNode *BTreeCreateNode(nc_uint32_t degree, NodeType node_type);
+static BTreeNode *BTreeCreateNode(NodeType node_type);
 
 /**
  * @brief 销毁B-树节点
@@ -34,7 +33,7 @@ static void BTreeSplitChild(BTreeNode *parent_node, nc_int32_t child_index);
  */
 static void BTreeInsertNonFull(BTreeNode *node, KEY_TYPE key);
 
-static BTreeNode *BTreeCreateNode(nc_uint32_t degree, NodeType node_type) {
+static BTreeNode *BTreeCreateNode(NodeType node_type) {
   BTreeNode *node = nullptr;
   node = new (std::nothrow)BTreeNode;
   if (!node) {
@@ -42,13 +41,13 @@ static BTreeNode *BTreeCreateNode(nc_uint32_t degree, NodeType node_type) {
   }
 
   node->type = node_type;
-  node->keys = new (std::nothrow)KEY_TYPE[2 * degree - 1];
+  node->keys = new (std::nothrow)KEY_TYPE[kOrder - 1];
   if (!node->keys) {
     delete node;
     return nullptr;
   }
 
-  node->children = new (std::nothrow)BTreeNode *[2 * degree];
+  node->children = new (std::nothrow)BTreeNode *[kOrder];
   if (!node->children) {
     delete node->keys;
     delete node;
@@ -77,14 +76,16 @@ static void BTreeDestroyNode(BTreeNode *node) {
 }
 
 static void BTreeSplitChild(BTreeNode *parent_node, nc_int32_t child_index) {
+  nc_int32_t degree = kOrder / 2;
+
   BTreeNode *split_node = parent_node->children[child_index];
-  nc_int32_t degree = kDegree;
-  BTreeNode *new_node = BTreeCreateNode(degree, split_node->type);
+  BTreeNode *new_node = BTreeCreateNode(split_node->type);
 
   new_node->key_num = degree - 1;
+  split_node->key_num = degree - 1;
 
   nc_int32_t index = 0;
-  for (; index < degree - 1; ++index) {
+  for (index = 0; index < degree - 1; ++index) {
     new_node->keys[index] = split_node->keys[index + degree];
   }
 
@@ -93,23 +94,23 @@ static void BTreeSplitChild(BTreeNode *parent_node, nc_int32_t child_index) {
       new_node->children[index] = split_node->children[index + degree];
     }
   }
-  split_node->key_num = degree - 1;
 
   for (index = parent_node->key_num; index >= child_index + 1; --index) {
-    parent_node[index + 1] = parent_node[index];
+    parent_node->children[index + 1] = parent_node->children[index];
   }
-  parent_node->children[index + 1] = new_node;
+
+  parent_node->children[child_index + 1] = new_node;
 
   for (index = parent_node->key_num - 1; index >= child_index; --index) {
     parent_node->keys[index + 1] = parent_node->keys[index];
   }
-  parent_node->keys[index] = split_node->keys[index - 1];
-  ++parent_node->key_num;
+  parent_node->keys[child_index] = split_node->keys[degree - 1];
+  parent_node->key_num += 1;
 }
 
 static void BTreeInsertNonFull(BTreeNode *node, KEY_TYPE key) {
   nc_int32_t index = node->key_num - 1;
-  nc_int32_t degree = kDegree;
+  nc_int32_t degree = kOrder / 2;
 
   // 节点为叶子节点, 直接插入
   if (node->type == NodeType::kLeaf) {
@@ -129,7 +130,7 @@ static void BTreeInsertNonFull(BTreeNode *node, KEY_TYPE key) {
     --index;
   }
 
-  if (node->children[index + 1]->key_num == static_cast<nc_uint32_t>(2 * degree - 1)) {
+  if (node->children[index + 1]->key_num == kOrder - 1) {
     // 孩子节点满了, 先分裂
     BTreeSplitChild(node, index + 1);
     if (node->keys[index + 1] < key) {
@@ -138,6 +139,16 @@ static void BTreeInsertNonFull(BTreeNode *node, KEY_TYPE key) {
   }
 
   BTreeInsertNonFull(node->children[index + 1], key);
+}
+
+BTree *BTreeCreate() {
+  BTree *b_tree = new BTree;
+  b_tree->degree = kOrder / 2;
+
+  BTreeNode *new_node = BTreeCreateNode(NodeType::kLeaf);
+  b_tree->root = new_node;
+
+  return b_tree;
 }
 
 nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key) {
@@ -150,10 +161,10 @@ nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key) {
   }
 
   BTreeNode *root = b_tree->root;
-  if (root->key_num != 2 * b_tree->degree - 1) {
+  if (root->key_num != kOrder - 1) {
     BTreeInsertNonFull(root, key);
   } else {
-    BTreeNode *new_node = BTreeCreateNode(kDegree, NodeType::kNormal);
+    BTreeNode *new_node = BTreeCreateNode(NodeType::kNormal);
     b_tree->root = new_node;
 
     new_node->children[0] = root;
@@ -166,6 +177,24 @@ nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key) {
 
     BTreeInsertNonFull(new_node->children[index], key);
   }
+
+  // BTreeNode *r = b_tree->root;
+	// if (r->key_num == kOrder - 1) {
+		
+	// 	BTreeNode *node = BTreeCreateNode(NodeType::kNormal);
+	// 	b_tree->root = node;
+
+	// 	node->children[0] = r;
+
+	// 	BTreeSplitChild(node, 0);
+
+	// 	int i = 0;
+	// 	if (node->keys[0] < key) i++;
+	// 	BTreeInsertNonFull(node->children[i], key);
+		
+	// } else {
+	// 	BTreeInsertNonFull(r, key);
+	// }
 
   return kOk;
 }
