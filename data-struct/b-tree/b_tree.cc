@@ -178,23 +178,5 @@ nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key) {
     BTreeInsertNonFull(new_node->children[index], key);
   }
 
-  // BTreeNode *r = b_tree->root;
-	// if (r->key_num == kOrder - 1) {
-		
-	// 	BTreeNode *node = BTreeCreateNode(NodeType::kNormal);
-	// 	b_tree->root = node;
-
-	// 	node->children[0] = r;
-
-	// 	BTreeSplitChild(node, 0);
-
-	// 	int i = 0;
-	// 	if (node->keys[0] < key) i++;
-	// 	BTreeInsertNonFull(node->children[i], key);
-		
-	// } else {
-	// 	BTreeInsertNonFull(r, key);
-	// }
-
   return kOk;
 }
