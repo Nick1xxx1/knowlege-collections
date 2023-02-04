@@ -29,10 +29,38 @@ typedef struct BTree {
   BTree() : root(nullptr), degree(0) {}
 } BTree;
 
+/**
+ * @brief 创建一棵B-树
+ * 
+ * @return BTree* 创建好的B-树对象
+ */
 BTree *BTreeCreate();
 
+/**
+ * @brief 销毁给定的B-树
+ * 
+ * @param b_tree 待销毁的B-树
+ */
 void BTreeDestory(BTree *b_tree);
 
+/**
+ * @brief 插入键到B-树中
+ * 
+ * @param b_tree 待插入键的B-树
+ * @param key 键
+ * @return nc_int8_t 插入结果, kOk表示成功, kError表示失败
+ */
 nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key);
+
+/**
+ * @brief 删除B-树中指定键对应的节点
+ * 
+ * @param b_tree 待删除节点的B-树
+ * @param key 键
+ * @return nc_int8_t 删除结果, kOk表示成功, kError表示失败
+ */
+nc_int8_t BTreeDelete(BTree *b_tree, KEY_TYPE key);
+
+// TODO: 增加搜索和更新函数
 
 #endif // B_TREE_H_

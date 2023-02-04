@@ -15,8 +15,8 @@ void BTreePrint(BTree *T, BTreeNode *node, nc_int32_t layer) {
     cout << "the tree is empty" << endl;
   } else {
     cout << endl
-         << "layer =" << layer << "keynum = " << p->key_num
-         << "is_leaf = " << static_cast<nc_int32_t>(p->type) << endl;
+         << "layer =" << layer << " keynum = " << p->key_num
+         << " is_leaf = " << static_cast<nc_int32_t>(p->type) << endl;
     for (i = 0; i < node->key_num; i++) {
       cout << static_cast<nc_char_t>(p->keys[i]) << " ";
     }
@@ -33,20 +33,18 @@ void BTreePrint(BTree *T, BTreeNode *node, nc_int32_t layer) {
 int main(int argc, char **argv) {
   // printf("Running main() from %s\n\n", __FILE__);
   // testing::InitGoogleTest(&argc, argv);
-  
+
   BTree *b_tree = BTreeCreate();
 
-	srand(48);
+  int i = 0;
+  string key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  for (i = 0; i < 26; i++) {
+    BTreeInsert(b_tree, key[i]);
+  }
 
-	int i = 0;
-	string key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	for (i = 0;i < 26;i ++) {
-		//key[i] = rand() % 1000;
-		printf("%c ", key[i]);
-		BTreeInsert(b_tree, key[i]);
-	}
+  BTreePrint(b_tree, b_tree->root, 0);
 
-	BTreePrint(b_tree, b_tree->root, 0);
+  BTreeDestory(b_tree);
 
   return 0;
 }
