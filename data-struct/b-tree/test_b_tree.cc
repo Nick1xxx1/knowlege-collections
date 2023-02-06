@@ -15,7 +15,7 @@ void BTreePrint(BTree *T, BTreeNode *node, nc_int32_t layer) {
     cout << "the tree is empty" << endl;
   } else {
     cout << endl
-         << "layer =" << layer << " keynum = " << p->key_num
+         << "layer = " << layer << " keynum = " << p->key_num
          << " is_leaf = " << static_cast<nc_int32_t>(p->type) << endl;
     for (i = 0; i < node->key_num; i++) {
       cout << static_cast<nc_char_t>(p->keys[i]) << " ";
@@ -36,9 +36,8 @@ int main(int argc, char **argv) {
 
   BTree *b_tree = BTreeCreate();
 
-  int i = 0;
   string key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  for (i = 0; i < 26; i++) {
+  for (size_t i = 0; i < key.size(); i++) {
     BTreeInsert(b_tree, key[i]);
   }
 

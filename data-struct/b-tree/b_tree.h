@@ -4,8 +4,8 @@
 #include "types.h"
 
 enum class NodeType : nc_uint8_t {
-  kLeaf = 0,
-  kNormal
+  kNormal = 0,
+  kLeaf
 };
 
 constexpr nc_int32_t kOrder = 6;
