@@ -16,8 +16,15 @@ using nc_socket_t = signed int;
 using nc_float32_t = float;
 using nc_float64_t = double;
 
-constexpr nc_int8_t kError = -1;
-constexpr nc_int8_t kOk = 0;
 constexpr nc_uint32_t kByteBits = 8;  // 一个字节的比特数
+constexpr nc_float64_t kElipse = 1e-6;
+
+enum class Result {
+  kError = -1,
+  kOk = 0,
+
+  kExist,
+  kNotExist
+};
 
 #endif // _KNOWLEGE_COLLECTIONS_TYPES_H_

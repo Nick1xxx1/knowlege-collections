@@ -48,18 +48,18 @@ void BTreeDestory(BTree *b_tree);
  * 
  * @param b_tree 待插入键的B-树
  * @param key 键
- * @return nc_int8_t 插入结果, kOk表示成功, kError表示失败
+ * @return Result 插入结果, kOk表示成功, kError表示失败
  */
-nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key);
+Result BTreeInsert(BTree *b_tree, KEY_TYPE key);
 
 /**
  * @brief 删除B-树中指定键对应的节点
  * 
  * @param b_tree 待删除节点的B-树
  * @param key 键
- * @return nc_int8_t 删除结果, kOk表示成功, kError表示失败
+ * @return Result 删除结果, kOk表示成功, kError表示失败
  */
-nc_int8_t BTreeDelete(BTree *b_tree, KEY_TYPE key);
+Result BTreeDelete(BTree *b_tree, KEY_TYPE key);
 
 // TODO: 增加搜索和更新函数
 

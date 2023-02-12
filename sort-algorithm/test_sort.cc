@@ -22,8 +22,8 @@ static void RandomVec(vector<T> &vec_to_rand)
 TEST(sortTest, bubbleSortCase)
 {
     vector<nc_int32_t> empty_vec;
-    nc_int8_t ret = BubbleSort(empty_vec);
-    EXPECT_EQ(ret, kError);
+    Result ret = BubbleSort(empty_vec);
+    EXPECT_EQ(ret, Result::kError);
 
     vector<nc_int32_t> test_vec = {1, 2, 3, 4, 5, 6};
     vector<nc_int32_t> rand_vec = test_vec;
@@ -31,7 +31,7 @@ TEST(sortTest, bubbleSortCase)
     EXPECT_NE(test_vec, rand_vec);
     ret = BubbleSort(rand_vec);
     EXPECT_EQ(test_vec, rand_vec);
-    EXPECT_EQ(ret, kOk);
+    EXPECT_EQ(ret, Result::kOk);
 
     vector<string> test_vec2 = {"a", "b", "c", "d", "e", "f"};
     vector<string> rand_vec2 = test_vec2;
@@ -39,13 +39,13 @@ TEST(sortTest, bubbleSortCase)
     EXPECT_NE(test_vec2, rand_vec2);
     ret = BubbleSort(rand_vec2);
     EXPECT_EQ(test_vec2, rand_vec2);
-    EXPECT_EQ(ret, kOk);
+    EXPECT_EQ(ret, Result::kOk);
 }
 
 TEST(sortTest, SelectSortCase)
 {
     vector<nc_int32_t> empty_vec;
-    nc_int8_t ret = SelectSort(empty_vec);
+    Result ret = SelectSort(empty_vec);
     EXPECT_EQ(ret, -1);
 
     vector<nc_int32_t> test_vec = {1, 2, 3, 4, 5, 6};
@@ -62,13 +62,13 @@ TEST(sortTest, SelectSortCase)
     EXPECT_NE(test_vec2, rand_vec2);
     ret = SelectSort(rand_vec2);
     EXPECT_EQ(test_vec2, rand_vec2);
-    EXPECT_EQ(ret, kOk);
+    EXPECT_EQ(ret, Result::kOk);
 }
 
 TEST(sortTest, InsertSortCase)
 {
     vector<nc_int32_t> empty_vec;
-    nc_int8_t ret = InsertSort(empty_vec);
+    Result ret = InsertSort(empty_vec);
     EXPECT_EQ(ret, -1);
 
     vector<nc_int32_t> test_vec = {1, 2, 3, 4, 5, 6};
@@ -85,14 +85,14 @@ TEST(sortTest, InsertSortCase)
     EXPECT_NE(test_vec2, rand_vec2);
     ret = InsertSort(rand_vec2);
     EXPECT_EQ(test_vec2, rand_vec2);
-    EXPECT_EQ(ret, kOk);
+    EXPECT_EQ(ret, Result::kOk);
 }
 
 TEST(sortTest, ShellSortCase)
 {
     vector<nc_int32_t> empty_vec;
-    nc_int8_t ret = ShellSort(empty_vec);
-    EXPECT_EQ(ret, kError);
+    Result ret = ShellSort(empty_vec);
+    EXPECT_EQ(ret, Result::kError);
 
     vector<nc_int32_t> test_vec = {1, 2, 3, 4, 5, 6};
     vector<nc_int32_t> rand_vec = test_vec;
@@ -108,7 +108,7 @@ TEST(sortTest, ShellSortCase)
     EXPECT_NE(test_vec2, rand_vec2);
     ret = ShellSort(rand_vec2);
     EXPECT_EQ(test_vec2, rand_vec2);
-    EXPECT_EQ(ret, kOk);
+    EXPECT_EQ(ret, Result::kOk);
 }
 
 TEST(sortTest, QuickSortCase)

@@ -10,7 +10,7 @@ TEST(testBinarySearchTree, testCreateAndDestory) {
   vector<KEY_TYPE> dataset = {24, 25, 13};
   BSTree *bs_tree = new BSTree;
   for (auto data : dataset) {
-    EXPECT_EQ(BSTreeInsert(bs_tree, data), kOk);
+    EXPECT_EQ(BSTreeInsert(bs_tree, data), Result::kOk);
   }
 
   BSTreeDestroy(&bs_tree);
@@ -160,13 +160,13 @@ TEST(testBinarySearchTree, testModify) {
   }
 
   nc_int32_t value = 4;
-  nc_int8_t ret = BSTreeModify(bs_tree, 5, (void*)&value);
-  EXPECT_EQ(ret, kOk);
+  Result ret = BSTreeModify(bs_tree, 5, (void*)&value);
+  EXPECT_EQ(ret, Result::kOk);
   BSTreeNode *node = BSTreeSearch(bs_tree, 5);
   EXPECT_EQ(*(nc_int32_t*)node->value, 4);
 
   ret = BSTreeModify(bs_tree, 11, reinterpret_cast<void*>(value));
-  EXPECT_EQ(ret, kError);
+  EXPECT_EQ(ret, Result::kError);
 
   BSTreeDestroy(&bs_tree);
 }

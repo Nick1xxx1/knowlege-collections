@@ -81,15 +81,15 @@ static BSTreeNode *BSTreeCreateNode(KEY_TYPE key) {
   return node;
 }
 
-nc_int8_t BSTreeInsert(BSTree *bs_tree, KEY_TYPE key) {
+Result BSTreeInsert(BSTree *bs_tree, KEY_TYPE key) {
   if (!bs_tree) {
-    return kError;
+    return Result::kError;
   }
 
   // 根节点为空, 直接创建根节点
   if (!bs_tree->root) {
     bs_tree->root = BSTreeCreateNode(key);
-    return kOk;
+    return Result::kOk;
   }
 
   BSTreeNode *node = bs_tree->root;
@@ -105,7 +105,7 @@ nc_int8_t BSTreeInsert(BSTree *bs_tree, KEY_TYPE key) {
       node = node->bst.right;
     } else {
       cerr << "Duplicate node" << endl;
-      return kError;
+      return Result::kError;
     }
   }
 
@@ -115,7 +115,7 @@ nc_int8_t BSTreeInsert(BSTree *bs_tree, KEY_TYPE key) {
     tmp->bst.right = BSTreeCreateNode(key);
   }
 
-  return kOk;
+  return Result::kOk;
 }
 
 static BSTreeNode *BSTreeDeleteNode(BSTreeNode *node, KEY_TYPE key) {
@@ -198,19 +198,19 @@ BSTreeNode *BSTreeSearch(BSTree *bs_tree, KEY_TYPE key) {
   return nullptr;
 }
 
-nc_int8_t BSTreeModify(BSTree *bs_tree, KEY_TYPE search_key, void *mod_value) {
+Result BSTreeModify(BSTree *bs_tree, KEY_TYPE search_key, void *mod_value) {
   if (!bs_tree || !bs_tree->root) {
-    return kError;
+    return Result::kError;
   }
 
   BSTreeNode *node = BSTreeSearch(bs_tree, search_key);
   if (!node) {
-    return kError;
+    return Result::kError;
   }
 
   node->value = mod_value;
 
-  return kOk;
+  return Result::kOk;
 }
 
 static void BSTreeDestroyNode(BSTreeNode *bs_tree_node) {

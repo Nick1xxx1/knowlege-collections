@@ -9,23 +9,21 @@
 
 class BloomFilter {
   public:
-    BloomFilter()
-      : max_item_num_(0), positive_false_(0), filter_bits_(0), hash_funcs_num_(0), seed_(0),
-        item_count_(0), filter_size_(0), data_(nullptr), hash_funcs_(nullptr) {}
     explicit BloomFilter(nc_uint32_t seed, nc_uint32_t max_item_num,
                          nc_float64_t positive_false)
         : max_item_num_(max_item_num),
           positive_false_(positive_false),
-          seed_(seed),
-          item_count_(0) {
-      if (positive_false_ <= 0 || positive_false_ >= 1) {
+          seed_(seed) {
+      if (positive_false_ <= kElipse || positive_false_ >= 1.0) {
         throw std::out_of_range("Positive false should range in (0, 1)");
       }
-      InitBloomFilter();
+
+      ResetBloomFilter();
     }
 
     ~BloomFilter() {}
 
+    BloomFilter() = delete;
     // 禁止拷贝和赋值
     BloomFilter(const BloomFilter&) = delete;
     BloomFilter &operator=(const BloomFilter&) = delete;
@@ -46,7 +44,12 @@ class BloomFilter {
      */
     void SetMaxItemNum(nc_uint32_t max_item_num) {
       max_item_num_ = max_item_num;
-      CalBloomFilterParams();
+
+      if (positive_false_ < kElipse) {
+        // 假阳率未设置, 不进行计算
+        return;
+      }
+      ResetBloomFilter();
     }
 
     /**
@@ -55,9 +58,48 @@ class BloomFilter {
      * @param positive_false 设置的假阳率
      */
     void SetPositiveFalse(nc_float64_t positive_false) {
+      if (positive_false <= kElipse || positive_false_ >= 1.0) {
+        throw std::out_of_range("Positive false should range in (0, 1)");
+      }
+
       positive_false_ = positive_false;
-      CalBloomFilterParams();
+
+      if (max_item_num_ == 0) {
+        // 元素数量未设置, 不进行计算
+        return;
+      }
+      ResetBloomFilter();
     }
+
+    void Reset(nc_uint32_t seed, nc_uint32_t max_item_num, nc_float64_t positive_false) {
+      if (positive_false_ <= kElipse || positive_false_ >= 1.0) {
+        throw std::out_of_range("Positive false should range in (0, 1)");
+      }
+
+      seed_ = seed;
+      max_item_num = max_item_num_;
+      positive_false_ = positive_false;
+
+      ResetBloomFilter();
+    }
+
+    /**
+     * @brief 向布隆过滤器中添加元素
+     * 
+     * @param key 待添加的值
+     * @param len 值的长度
+     * @return Result 添加结果
+     */
+    Result AddValue(const void *key, nc_uint32_t len);
+
+    /**
+     * @brief 查询某个值是否存在于布隆过滤器中
+     * 
+     * @param key 待查询的值
+     * @param len 值的长度
+     * @return Result 查询结果
+     */
+    Result CheckValue(const void *key, nc_uint32_t len);
 
     /**
      * @brief 调试用函数, 用于查看布隆过滤器中各个参数的值
@@ -85,14 +127,25 @@ class BloomFilter {
     }
 
     /**
-     * @brief 初始化布隆过滤器
+     * @brief 重置布隆过滤器
      * 
      */
-    void InitBloomFilter() {
+    void ResetBloomFilter() {
       CalBloomFilterParams();
 
-      data_.reset(new nc_uint8_t[filter_size_]);
+      bitmap_.reset(new nc_uint8_t[filter_size_]);
       hash_funcs_.reset(new nc_uint32_t[hash_funcs_num_]);
+      item_count_ = 0;
+    }
+
+    void CalHash(const void *key, nc_uint32_t len);
+
+    void SetBit(nc_uint32_t n) {
+      bitmap_[n / kByteBits] |= (1 << (n % kByteBits));
+    }
+
+    uint32_t GetBit(nc_uint32_t n) {
+      return bitmap_[n / kByteBits] & (1 << (n % kByteBits));
     }
 
   private:
@@ -108,8 +161,8 @@ class BloomFilter {
     
     nc_uint32_t filter_size_;     // BloomFilter的字节数, filter_bits_ / 8
 
-    std::unique_ptr<nc_uint8_t> data_;      // BloomFilter中的数据 
-    std::unique_ptr<uint32_t> hash_funcs_;  // 哈希函数数组
+    std::unique_ptr<nc_uint8_t[]> bitmap_;      // BloomFilter中的数据 
+    std::unique_ptr<uint32_t[]> hash_funcs_;  // 哈希函数数组
 };
 
 #endif // BLOOM_FILTER_H_

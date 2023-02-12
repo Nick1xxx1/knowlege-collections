@@ -18,12 +18,12 @@
  * 
  * @tparam T 待排序的数组中变量的类型
  * @param sort_data 待排序的数组
- * @return nc_int8_t 排序结果, kError表示失败, kOk表示成功
+ * @return Result 排序结果, kError表示失败, kOk表示成功
  */
 template<typename T>
-nc_int8_t BubbleSort(std::vector<T> &sort_data) {
+Result BubbleSort(std::vector<T> &sort_data) {
   if (sort_data.empty()) {
-    return kError;
+    return Result::kError;
   }
 
   size_t data_len = sort_data.size();
@@ -42,7 +42,7 @@ nc_int8_t BubbleSort(std::vector<T> &sort_data) {
     }
   }
 
-  return kOk;
+  return Result::kOk;
 }
 
 /**
@@ -50,12 +50,12 @@ nc_int8_t BubbleSort(std::vector<T> &sort_data) {
  * 
  * @tparam T 待排序的数组中变量的类型
  * @param sort_data 待排序的数组
- * @return nc_int8_t 排序结果, kError表示失败, kOk表示成功
+ * @return Result 排序结果, kError表示失败, kOk表示成功
  */
 template<typename T>
-nc_int8_t SelectSort(std::vector<T> &sort_data) {
+Result SelectSort(std::vector<T> &sort_data) {
   if (sort_data.empty()) {
-    return kError;
+    return Result::kError;
   }
 
   size_t data_len = sort_data.size();
@@ -68,7 +68,7 @@ nc_int8_t SelectSort(std::vector<T> &sort_data) {
     }
   }
 
-  return kOk;
+  return Result::kOk;
 }
 
 /**
@@ -76,12 +76,12 @@ nc_int8_t SelectSort(std::vector<T> &sort_data) {
  * 
  * @tparam T 待排序的数组中变量的类型
  * @param sort_data 待排序的数组
- * @return nc_int8_t 排序结果, kError表示失败, kOk表示成功
+ * @return Result 排序结果, kError表示失败, kOk表示成功
  */
 template<typename T>
-nc_int8_t InsertSort(std::vector<T> &sort_data) {
+Result InsertSort(std::vector<T> &sort_data) {
   if (sort_data.empty()) {
-    return kError;
+    return Result::kError;
   }
 
   size_t data_len = sort_data.size();
@@ -95,7 +95,7 @@ nc_int8_t InsertSort(std::vector<T> &sort_data) {
     sort_data[j + 1] = tmp_data;
   }
 
-  return kOk;
+  return Result::kOk;
 }
 
 /**
@@ -103,12 +103,12 @@ nc_int8_t InsertSort(std::vector<T> &sort_data) {
  * 
  * @tparam T 待排序的数组中变量的类型
  * @param sort_data 待排序的数组
- * @return nc_int8_t 排序结果, kError表示失败, kOk表示成功
+ * @return Result 排序结果, kError表示失败, kOk表示成功
  */
 template<typename T>
-nc_int8_t ShellSort(std::vector<T> &sort_data) {
+Result ShellSort(std::vector<T> &sort_data) {
   if (sort_data.empty()) {
-    return kError;
+    return Result::kError;
   }
 
   nc_int32_t data_len = sort_data.size();
@@ -124,7 +124,7 @@ nc_int8_t ShellSort(std::vector<T> &sort_data) {
     }
   }
 
-  return kOk;
+  return Result::kOk;
 }
 
 /**

@@ -31,9 +31,9 @@ typedef struct BSTree {
  * 
  * @param bs_tree 待插入键的二叉搜索树
  * @param key 待插入的键
- * @return nc_int8_t 插入结果, kOk表示成功, kError表示失败
+ * @return Result 插入结果, kOk表示成功, kError表示失败
  */
-nc_int8_t BSTreeInsert(BSTree *bs_tree, KEY_TYPE key);
+Result BSTreeInsert(BSTree *bs_tree, KEY_TYPE key);
 
 /**
  * @brief 删除二叉搜索树中指定键的节点
@@ -58,9 +58,9 @@ BSTreeNode *BSTreeSearch(BSTree *bs_tree, KEY_TYPE key);
  * @param bs_tree 待修改的二叉搜索树
  * @param search_key 需要修改的节点对应的键
  * @param mod_value 修改后的值
- * @return nc_int8_t 修改结果, kOk表示成功, kError表示失败
+ * @return Result 修改结果, kOk表示成功, kError表示失败
  */
-nc_int8_t BSTreeModify(BSTree *bs_tree, KEY_TYPE search_key, void *mod_value);
+Result BSTreeModify(BSTree *bs_tree, KEY_TYPE search_key, void *mod_value);
 
 /**
  * @brief 销毁二叉搜索树

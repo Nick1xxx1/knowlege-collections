@@ -360,13 +360,13 @@ void BTreeDestory(BTree *b_tree) {
   delete b_tree;
 }
 
-nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key) {
+Result BTreeInsert(BTree *b_tree, KEY_TYPE key) {
   // 插入有两种情况, 插入只会在叶子节点进行插入
   // 1、根节点不满
   // 2、根节点满了
 
   if (!b_tree || !b_tree->root) {
-    return kError;
+    return Result::kError;
   }
 
   BTreeNode *root = b_tree->root;
@@ -387,14 +387,14 @@ nc_int8_t BTreeInsert(BTree *b_tree, KEY_TYPE key) {
     BTreeInsertNonFull(new_node->children[index], key);
   }
 
-  return kOk;
+  return Result::kOk;
 }
 
-nc_int8_t BTreeDelete(BTree *b_tree, KEY_TYPE key) {
+Result BTreeDelete(BTree *b_tree, KEY_TYPE key) {
   if (!b_tree || !b_tree->root) {
-    return kError;
+    return Result::kError;
   }
 
   BTreeDeleteKey(b_tree, b_tree->root, key);
-  return kOk;
+  return Result::kOk;
 }
