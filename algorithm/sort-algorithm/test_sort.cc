@@ -46,7 +46,7 @@ TEST(sortTest, SelectSortCase)
 {
     vector<nc_int32_t> empty_vec;
     Result ret = SelectSort(empty_vec);
-    EXPECT_EQ(ret, -1);
+    EXPECT_EQ(ret, Result::kError);
 
     vector<nc_int32_t> test_vec = {1, 2, 3, 4, 5, 6};
     vector<nc_int32_t> rand_vec = test_vec;
@@ -54,7 +54,7 @@ TEST(sortTest, SelectSortCase)
     EXPECT_NE(test_vec, rand_vec);
     ret = SelectSort(rand_vec);
     EXPECT_EQ(test_vec, rand_vec);
-    EXPECT_EQ(ret, 0);
+    EXPECT_EQ(ret, Result::kOk);
 
     vector<string> test_vec2 = {"a", "b", "c", "d", "e", "f"};
     vector<string> rand_vec2 = test_vec2;
@@ -69,7 +69,7 @@ TEST(sortTest, InsertSortCase)
 {
     vector<nc_int32_t> empty_vec;
     Result ret = InsertSort(empty_vec);
-    EXPECT_EQ(ret, -1);
+    EXPECT_EQ(ret, Result::kError);
 
     vector<nc_int32_t> test_vec = {1, 2, 3, 4, 5, 6};
     vector<nc_int32_t> rand_vec = test_vec;
@@ -77,7 +77,7 @@ TEST(sortTest, InsertSortCase)
     EXPECT_NE(test_vec, rand_vec);
     ret = InsertSort(rand_vec);
     EXPECT_EQ(test_vec, rand_vec);
-    EXPECT_EQ(ret, 0);
+    EXPECT_EQ(ret, Result::kOk);
 
     vector<string> test_vec2 = {"a", "b", "c", "d", "e", "f"};
     vector<string> rand_vec2 = test_vec2;
@@ -100,7 +100,7 @@ TEST(sortTest, ShellSortCase)
     EXPECT_NE(test_vec, rand_vec);
     ret = ShellSort(rand_vec);
     EXPECT_EQ(test_vec, rand_vec);
-    EXPECT_EQ(ret, 0);
+    EXPECT_EQ(ret, Result::kOk);
 
     vector<string> test_vec2 = {"a", "b", "c", "d", "e", "f"};
     vector<string> rand_vec2 = test_vec2;
