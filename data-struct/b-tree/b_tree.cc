@@ -378,7 +378,7 @@ Result BTreeInsert(BTree *b_tree, KEY_TYPE key) {
 
     new_node->children[0] = root;
     BTreeSplitChild(new_node, 0);
-    
+
     nc_uint32_t index = 0;
     if (new_node->keys[0] < key) {
       ++index;

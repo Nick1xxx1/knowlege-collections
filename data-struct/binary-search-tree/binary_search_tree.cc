@@ -144,7 +144,7 @@ static BSTreeNode *BSTreeDeleteNode(BSTreeNode *node, KEY_TYPE key) {
       delete node;
       return left_node;
     }
-    
+
     // 左右子树均不为空, 则查找到右子树的最左节点
     BSTreeNode *most_left_node = node->bst.right;
     while (most_left_node->bst.left) {
@@ -364,10 +364,10 @@ static vector<KEY_TYPE> BSTreeTraverseLevel(BSTree *bs_tree) {
 }
 
 vector<KEY_TYPE> BSTreeTraverse(BSTree *bs_tree, TraverseType traverse_type) {
-  switch(traverse_type) {
+  switch (traverse_type) {
     case TraverseType::kPrev:
       return BSTreeTraversePrev(bs_tree);
-    
+
     case TraverseType::kMid:
       return BSTreeTraverseMid(bs_tree);
 

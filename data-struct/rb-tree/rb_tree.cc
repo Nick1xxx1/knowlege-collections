@@ -148,7 +148,7 @@ static void RBTreeInsertAdjust(RBTree *rb_tree, RBTreeNode *adjust_node) {
   // 1、叔父节点为红色, 直接变色
   // 2、叔父节点为祖父节点的右节点, 叔父节点为黑色, 调整节点为父节点的右子树, 先左旋再右旋
   // 3、叔父节点为祖父节点的左节点, 叔父节点为黑色, 调整节点为父节点的左子树, 先右旋再左旋
-  
+
   // 父节点为红色时才需调整
   while (adjust_node->rbt.parent->node_color == NodeColor::kRed) {
     if (adjust_node->rbt.parent == adjust_node->rbt.parent->rbt.parent->rbt.left) {
@@ -167,7 +167,7 @@ static void RBTreeInsertAdjust(RBTree *rb_tree, RBTreeNode *adjust_node) {
           adjust_node = adjust_node->rbt.parent;
           RBTreeLeftRotate(rb_tree, adjust_node);
         }
-        
+
         adjust_node->rbt.parent->node_color = NodeColor::kBlack;
         adjust_node->rbt.parent->rbt.parent->node_color = NodeColor::kRed;
         RBTreeRightRotate(rb_tree, adjust_node->rbt.parent->rbt.parent);
@@ -188,7 +188,7 @@ static void RBTreeInsertAdjust(RBTree *rb_tree, RBTreeNode *adjust_node) {
           adjust_node = adjust_node->rbt.parent;
           RBTreeRightRotate(rb_tree, adjust_node);
         }
-        
+
         adjust_node->rbt.parent->node_color = NodeColor::kBlack;
         adjust_node->rbt.parent->rbt.parent->node_color = NodeColor::kRed;
         RBTreeLeftRotate(rb_tree, adjust_node->rbt.parent->rbt.parent);

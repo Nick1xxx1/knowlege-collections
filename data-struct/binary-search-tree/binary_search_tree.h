@@ -1,5 +1,16 @@
-#ifndef _BINARY_SEARCH_TREE_H_
-#define _BINARY_SEARCH_TREE_H_
+/**
+ * @file binary_search_tree.h
+ * @author Nick
+ * @brief 二叉搜索树实现
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#ifndef BINARY_SEARCH_TREE_H_
+#define BINARY_SEARCH_TREE_H_
 
 #include <vector>
 
@@ -85,4 +96,4 @@ enum class TraverseType {
  */
 std::vector<KEY_TYPE> BSTreeTraverse(BSTree *bs_tree, TraverseType traverse_type);
 
-#endif // _BINARY_SEARCH_TREE_H_
+#endif // BINARY_SEARCH_TREE_H_

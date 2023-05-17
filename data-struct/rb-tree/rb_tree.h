@@ -1,5 +1,16 @@
-#ifndef _RB_TREE_H_
-#define _RB_TREE_H_
+/**
+ * @file rb_tree.h
+ * @author Nick
+ * @brief 红黑树实现
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#ifndef RB_TREE_H_
+#define RB_TREE_H_
 
 #include "types.h"
 
@@ -68,4 +79,4 @@ void RBTreeDelete(RBTree *rb_tree, RBTreeNode *replace_node);
  */
 RBTreeNode *RBTreeSearch(RBTree *rb_tree, KEY_TYPE key);
 
-#endif // _RB_TREE_H_
+#endif // RB_TREE_H_
