@@ -1,14 +1,18 @@
-#ifndef __SORT__H_
-#define __SORT__H_
-
 /**
  * @file sort.h
- * @author chen
+ * @author Nick
  * @brief 常见排序算法实现
- * @date 2021-10-28
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * @copyright Copyright (c) 2023
  * 
  */
 
+#ifndef SORT_H_
+#define SORT_H_
+
+#include <utility>
 #include <vector>
 
 #include "types.h"
@@ -89,7 +93,7 @@ Result InsertSort(std::vector<T> &sort_data) {
     size_t j = i - 1;
     T tmp_data = sort_data[i];
     for (; j >= 0 && tmp_data < sort_data[j]; --j) {
-      sort_data[j + 1] = sort_data[j]; 
+      sort_data[j + 1] = sort_data[j];
     }
 
     sort_data[j + 1] = tmp_data;
@@ -306,4 +310,4 @@ void HeapSort(std::vector<T> &sort_data) {
   }
 }
 
-#endif
+#endif // SORT_H_

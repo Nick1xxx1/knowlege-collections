@@ -1,5 +1,16 @@
-#ifndef _THREAD_POOL_H_
-#define _THREAD_POOL_H_
+/**
+ * @file threadpool.h
+ * @author Nick
+ * @brief 线程池实现
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#ifndef THREADPOOL_H_
+#define THREADPOOL_H_
 
 #include <pthread.h>
 
@@ -37,4 +48,4 @@ int createThreadPool(threadPool *pool, int poolNum);
 int destoryThreadPool(threadPool *pool);
 int addThreadPoolTask(threadPool *pool, threadTask *task);
 
-#endif
+#endif // THREADPOOL_H_

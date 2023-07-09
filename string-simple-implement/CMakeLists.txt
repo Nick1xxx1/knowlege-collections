@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(testString)
 
+set(CMAKE_CXX_STANDARD 17)
+
 add_definitions(-O3 -Wall)
 add_executable(testString test_string.cc)
 add_library(mystring my_string.cc)

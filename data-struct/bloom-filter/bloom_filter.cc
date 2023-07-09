@@ -7,60 +7,60 @@ using std::cout;
 using std::endl;
 
 namespace {
-  // MurmurHash2, 64-bit versions, by Austin Appleby
-  // https://sites.google.com/site/murmurhash/
-  inline nc_uint64_t MurmurHash2(const void *key, int len, uint32_t seed) {
-    const nc_uint64_t m = 0xc6a4a7935bd1e995;
-    const int r = 47;
+// MurmurHash2, 64-bit versions, by Austin Appleby
+// https://sites.google.com/site/murmurhash/
+inline nc_uint64_t MurmurHash2(const void *key, int len, uint32_t seed) {
+  const nc_uint64_t m = 0xc6a4a7935bd1e995;
+  const int r = 47;
 
-    nc_uint64_t h = seed ^ (len * m);
+  nc_uint64_t h = seed ^ (len * m);
 
-    const nc_uint64_t *data = (const nc_uint64_t *)key;
-    const nc_uint64_t *end = data + (len / 8);
+  const nc_uint64_t *data = (const nc_uint64_t *)key;
+  const nc_uint64_t *end = data + (len / 8);
 
-    while (data != end) {
-      nc_uint64_t k = *data++;
+  while (data != end) {
+    nc_uint64_t k = *data++;
 
-      k *= m;
-      k ^= k >> r;
-      k *= m;
+    k *= m;
+    k ^= k >> r;
+    k *= m;
 
-      h ^= k;
-      h *= m;
-    }
-
-    const uint8_t *data2 = (const uint8_t *)data;
-
-    switch (len & 7) {
-      case 7:
-        h ^= ((nc_uint64_t)data2[6]) << 48;
-      case 6:
-        h ^= ((nc_uint64_t)data2[5]) << 40;
-      case 5:
-        h ^= ((nc_uint64_t)data2[4]) << 32;
-      case 4:
-        h ^= ((nc_uint64_t)data2[3]) << 24;
-      case 3:
-        h ^= ((nc_uint64_t)data2[2]) << 16;
-      case 2:
-        h ^= ((nc_uint64_t)data2[1]) << 8;
-      case 1:
-        h ^= ((nc_uint64_t)data2[0]);
-        h *= m;
-    };
-
-    h ^= h >> r;
+    h ^= k;
     h *= m;
-    h ^= h >> r;
-
-    return h;
   }
 
-  inline nc_uint32_t MixUint64(nc_uint64_t v) {
-    return static_cast<nc_uint32_t>((v >> 32) ^ v);
+  const uint8_t *data2 = (const uint8_t *)data;
+
+  switch (len & 7) {
+    case 7:
+      h ^= ((nc_uint64_t)data2[6]) << 48;
+    case 6:
+      h ^= ((nc_uint64_t)data2[5]) << 40;
+    case 5:
+      h ^= ((nc_uint64_t)data2[4]) << 32;
+    case 4:
+      h ^= ((nc_uint64_t)data2[3]) << 24;
+    case 3:
+      h ^= ((nc_uint64_t)data2[2]) << 16;
+    case 2:
+      h ^= ((nc_uint64_t)data2[1]) << 8;
+    case 1:
+      h ^= ((nc_uint64_t)data2[0]);
+      h *= m;
   }
 
+  h ^= h >> r;
+  h *= m;
+  h ^= h >> r;
+
+  return h;
 }
+
+inline nc_uint32_t MixUint64(nc_uint64_t v) {
+  return static_cast<nc_uint32_t>((v >> 32) ^ v);
+}
+
+}  // namespace
 
 Result BloomFilter::AddValue(const void *key, nc_uint32_t len) {
   if (!key) {
@@ -97,7 +97,8 @@ Result BloomFilter::CheckValue(const void *key, nc_uint32_t len) {
 void BloomFilter::PrintBloomFilterInfo() {
   cout << "Bloom filter information:" << endl
        << "n = " << max_item_num_ << ", p = " << positive_false_
-       << ", m = " << filter_bits_ << ", k = " << hash_funcs_num_ << endl << endl;
+       << ", m = " << filter_bits_ << ", k = " << hash_funcs_num_ << endl
+       << endl;
 }
 
 void BloomFilter::CalHash(const void *key, nc_uint32_t len) {

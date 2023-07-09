@@ -5,8 +5,6 @@
 
 #include <exception>
 
-using namespace std;
-
 namespace {
   constexpr nc_uint8_t kDefaultStrSize = 1;
 }
@@ -72,7 +70,7 @@ MyString &MyString::operator+=(const MyString &rhs) {
 
 nc_char_t &MyString::operator[](size_t index) {
   if (index >= length_) {
-    throw out_of_range("out of range");
+    throw std::out_of_range("out of range");
   }
 
   return const_cast<nc_char_t &>(static_cast<const MyString &>(*this)[index]);
@@ -80,7 +78,7 @@ nc_char_t &MyString::operator[](size_t index) {
 
 const nc_char_t &MyString::operator[](size_t index) const {
   if (index >= length_) {
-    throw out_of_range("out of range");
+    throw std::out_of_range("out of range");
   }
 
   return data_[index];

@@ -1,5 +1,16 @@
-#ifndef _MY_STRING_H_
-#define _MY_STRING_H_
+/**
+ * @file my_string.h
+ * @author Nick
+ * @brief 自定义实现的string类
+ * @version 0.1
+ * @date 2023-05-17
+ *
+ * @copyright Copyright (c) 2023
+ *
+ */
+
+#ifndef MY_STRING_H_
+#define MY_STRING_H_
 
 #include <iostream>
 
@@ -10,11 +21,12 @@ class MyString {
   friend bool operator==(const MyString &lhs, const MyString &rhs);
   friend bool operator!=(const MyString &lhs, const MyString &rhs);
   friend std::ostream &operator<<(std::ostream &out, const MyString &ms);
-public:
+
+ public:
   MyString();
-  MyString(const nc_char_t *str);
+  explicit MyString(const nc_char_t *str);
   MyString(const MyString &ms);
-  MyString& operator=(const MyString &rhs);
+  MyString &operator=(const MyString &rhs);
   ~MyString();
 
   MyString &operator+=(const MyString &rhs);
@@ -25,7 +37,7 @@ public:
   const nc_char_t *toCStr() const { return data_; }
   nc_bool_t Empty() const { return length_ == 0; }
 
-private:
+ private:
   nc_char_t *data_;
   size_t length_;
 };
@@ -34,4 +46,4 @@ bool operator==(const MyString &lhs, const MyString &rhs);
 bool operator!=(const MyString &lhs, const MyString &rhs);
 std::ostream &operator<<(std::ostream &out, const MyString &ms);
 
-#endif
+#endif  // MY_STRING_H_

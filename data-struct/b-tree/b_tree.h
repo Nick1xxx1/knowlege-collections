@@ -1,3 +1,14 @@
+/**
+ * @file b_tree.h
+ * @author Nick
+ * @brief B-树实现
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #ifndef B_TREE_H_
 #define B_TREE_H_
 

@@ -1,5 +1,16 @@
-#ifndef _KMP_H_
-#define _KMP_H_
+/**
+ * @file kmp.h
+ * @author Nick
+ * @brief kmp算法
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#ifndef ALGORITHM_KMP_ALGORITHM_KMP_H_
+#define ALGORITHM_KMP_ALGORITHM_KMP_H_
 
 #include <string>
 #include <vector>
@@ -15,4 +26,4 @@
  */
 nc_int32_t Kmp(const std::string &text, const std::string &pattern);
 
-#endif
+#endif // ALGORITHM_KMP_ALGORITHM_KMP_H_

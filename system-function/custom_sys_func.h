@@ -1,5 +1,16 @@
-#ifndef _CUSTOM_SYS_FUNC_H_
-#define _CUSTOM_SYS_FUNC_H_
+/**
+ * @file custom_sys_func.h
+ * @author Nick
+ * @brief 自定义实现的系统函数
+ * @version 0.1
+ * @date 2023-05-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#ifndef CUSTOM_SYS_FUNC_H_
+#define CUSTOM_SYS_FUNC_H_
 
 #include <stddef.h>
 
@@ -97,4 +108,4 @@ nc_int32_t CustomAtoi(nc_char_t *str);
  */
 void *CustomMemset(void *mem, nc_int32_t val, nc_uint32_t n);
 
-#endif // _CUSTOM_SYS_FUNC_H_
+#endif // CUSTOM_SYS_FUNC_H_
