@@ -14,6 +14,16 @@
 #include <cstdlib>
 #include <cassert>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "chatlib.h"
+
+#ifdef __cplusplus
+}
+#endif
+
 namespace {
   constexpr auto kMaxClients = 1000;
   constexpr auto kServerPort = 8888;  // 聊天服务器端口
@@ -32,108 +42,6 @@ typedef struct ChatState {
 } ChatState;
 
 ChatState *chatroom = nullptr;
-
-int CreateTCPServer(int port) {
-  int sock_fd;
-  if ((sock_fd = ::socket(AF_INET, SOCK_STREAM, 0)) == -1) {
-    perror("Create tcp server socket failed");
-    return -1;
-  }
-
-  int yes = 1;
-  int ret = setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
-  if (ret == -1) {
-    perror("Set tcp server socket reuse addr opt failed");
-    return -1;
-  }
-
-  struct sockaddr_in sa;
-  memset(&sa, 0, sizeof(sa));
-  sa.sin_family = AF_INET;
-  sa.sin_port = htons(kServerPort);
-  sa.sin_addr.s_addr = htonl(INADDR_ANY);
-
-  ret = ::bind(sock_fd, (struct sockaddr*)&sa, sizeof(sa));
-  if (ret == -1) {
-    perror("Bind tcp server socket failed");
-    return -1;
-  }
-
-  ret = ::listen(sock_fd, 511);
-  if (ret == -1) {
-    perror("Listen tcp server socket failed");
-    return -1;
-  }
-
-  return sock_fd;
-}
-
-int SetSocketNonBlockNoDelay(int fd) {
-  int flags = fcntl(fd, F_GETFL);
-  if (flags == -1) {
-    perror("Get file descriptor flags failed");
-    return -1;
-  }
-
-  int ret = fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-  if (ret == -1) {
-    perror("Set file descriptor nonblock failed");
-    return -1;
-  }
-
-  int yes = 1;
-  ret = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(yes));
-  if (ret == -1) {
-    perror("Set tcp server socket no delay opt failed");
-    return -1;
-  }
-
-  return 0;
-}
-
-int AcceptClient(int server_sock) {
-  int cli_sock;
-  while (1) {
-    struct sockaddr_in sa;
-    socklen_t sock_len = sizeof(sa);
-
-    cli_sock = ::accept(server_sock, (struct sockaddr*)&sa, &sock_len);
-    if (cli_sock == -1) {
-      if (errno == EINTR || errno == EAGAIN) {
-        continue;
-      }
-
-      perror("Accept client socket failed");
-      return -1;
-    }
-
-    break;
-  }
-
-  return cli_sock;
-}
-
-void *ChatMalloc(size_t size) {
-  void *ptr = malloc(size);
-  if (ptr == nullptr) {
-    perror("Out of memory");
-    exit(1);
-  }
-
-  return ptr;
-}
-
-void *ChatRealloc(void *ptr, size_t size) {
-  void *new_ptr = realloc(ptr, size);
-  if (new_ptr == nullptr) {
-    perror("Out of memory");
-    exit(1);
-  }
-
-  ptr = new_ptr;
-
-  return ptr;
-}
 
 Client *CreateClient(int fd) {
   assert(chatroom->clients[fd] == nullptr);
@@ -272,7 +180,7 @@ int main(int argc, char **argv) {
         "Welcome to Chatroom! "
         "Use /nick <nickname> to set your nickname.\n";
       write(client->fd, welcome_msg, strlen(welcome_msg));
-      printf("Connected client fd=%d", fd);
+      printf("Connected client fd=%d\n", fd);
     }
 
     char read_buf[256];
